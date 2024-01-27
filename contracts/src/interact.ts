@@ -43,16 +43,27 @@ await deployZkAppTxn.sign([deployer.privateKey, ZK_APP_PRIVATE_KEY]).send();
 export let currTimeStamp = zkApp.network.timestamp.get()
 console.log(currTimeStamp.toString())
 
-let from = zkApp.fromTokens.get().toString();
-let to = zkApp.toTokens.get().toString();
-console.log(`${from} -> ${to}`)
+function showCurrentTokenValue() {
+    let from = zkApp.fromTokens.get().toString();
+    let to = zkApp.toTokens.get().toString();
+    console.log(`${from} -> ${to}`)
+}
 
-const streamTransferTXN = await Mina.transaction( builder.publicKey, () => {
-    zkApp.streamTransfer();
-});
-await streamTransferTXN.prove();
-await streamTransferTXN.sign([builder.privateKey]).send();
+async function doTransfer() {
 
-from = zkApp.fromTokens.get().toString();
-to = zkApp.toTokens.get().toString();
-console.log(`${from} -> ${to}`)
+    let streamTransferTXN = await Mina.transaction( builder.publicKey, () => {
+        zkApp.streamTransfer();
+    });
+    await streamTransferTXN.prove();
+    await streamTransferTXN.sign([builder.privateKey]).send();
+}
+
+showCurrentTokenValue()
+await doTransfer()
+showCurrentTokenValue()
+await doTransfer()
+showCurrentTokenValue()
+await doTransfer()
+showCurrentTokenValue()
+await doTransfer()
+showCurrentTokenValue()
